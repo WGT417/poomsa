@@ -777,7 +777,7 @@ function openEdit(pid){
 }
 function closeModal(){ge("mback").classList.add("hidden");eid=null;}
 ge("mCancel").addEventListener("click",closeModal);
-ge("mback").addEventListener("click",function(e){if(e.target===ge("mback"))closeModal();});
+// 배경 클릭으로 모달 닫기 비활성화 (취소 버튼으로만 닫기)
 ge("mSubmit").addEventListener("click",function(){
   var title=ge("mTitle").value.trim();
   var body=ge("mBody").value.trim();
