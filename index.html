@@ -654,7 +654,7 @@ function attachPost(){
   postLsn=ref;
   ref.on("value",function(snap){
     var posts=[];
-    if(snap.exists())snap.forEach(function(c){var v=c.val();v.id=c.key;posts.push(v);});
+    if(snap.exists())snap.forEach(function(c){var v=c.val()||{};v.id=c.key;posts.push(v);});
     posts.sort(function(a,b){return(b.createdAt||0)-(a.createdAt||0);});
     var el=ge("board");
     if(!el)return;
@@ -691,6 +691,10 @@ function detach(){
 }
 
 function renderCard(p){
+  if(!p.authorName) p.authorName="익명";
+  if(!p.authorClass) p.authorClass="?";
+  if(!p.title) p.title="";
+  if(!p.body) p.body="";
   var isOwn=cu&&cu.name===p.authorName&&cu.classNum===p.authorClass;
   var isAdm=cu&&cu.isAdmin;
   var col=gc(p.authorName);
@@ -739,7 +743,7 @@ function loadCmts(pid){
     var togBtn=document.querySelector(".cmttog[data-pid='"+pid+"']");
     if(!list)return;
     var cmts=[];
-    if(snap.exists())snap.forEach(function(c){var v=c.val();v.id=c.key;cmts.push(v);});
+    if(snap.exists())snap.forEach(function(c){var v=c.val()||{};v.id=c.key;if(!v.authorName)v.authorName="익명";if(!v.authorClass)v.authorClass="?";if(!v.body)v.body="";cmts.push(v);});
     cmts.sort(function(a,b){return(a.createdAt||0)-(b.createdAt||0);});
     if(!cmts.length){
       list.innerHTML='<div style="font-size:12px;color:var(--muted);padding:6px 0">아직 댓글이 없어요. 첫 댓글을 달아보세요!</div>';
